@@ -61,25 +61,11 @@ class HtmlView < View
     @project = project
     @config = config
     @dir = dir
-    @template_dir = File.dirname Ditz::find_ditz_file("index.rhtml")
+    @template_dir = File.dirname Ditz::find_ditz_file("../share/index.rhtml")
   end
 
-  def render_all
-    Dir.mkdir @dir unless File.exists? @dir
-    SUPPORT_FILES.each { |f| FileUtils.cp File.join(@template_dir, f), @dir }
-
-    ## build up links
-    links = {}
-    @project.releases.each { |r| links[r] = "release-#{r.name}.html" }
-    @project.issues.each { |i| links[i] = "issue-#{i.id}.html" }
-    @project.components.each { |c| links[c] = "component-#{c.name}.html" }
-    links["unassigned"] = "unassigned.html" # special case: unassigned
-    links["index"] = "index.html" # special case: index
-
-    @project.issues.each do |issue|
-      fn = File.join @dir, links[issue]
-      #puts "Generating #{fn}..."
-
+  def generate_issue_html_str links, issue
+      
       extra_summary = self.class.view_additions_for(:issue_summary).map { |b| b[issue, @config] }.compact
       extra_details = self.class.view_additions_for(:issue_details).map { |b| b[issue, @config] }.compact
 
@@ -91,31 +77,57 @@ class HtmlView < View
       extra_summary_html = extra_summary.map { |string, extra_binding| erb.render_string string, extra_binding }.join
       extra_details_html = extra_details.map { |string, extra_binding| erb.render_string string, extra_binding }.join
 
-      File.open(fn, "w") { |f| f.puts erb.render_template("issue", { :extra_summary_html => extra_summary_html, :extra_details_html => extra_details_html }) }
+      erb.render_template("issue", { :extra_summary_html => extra_summary_html, :extra_details_html => extra_details_html })
+
+  end
+
+  def generate_release_html_str links, r
+	ErbHtml.new(@template_dir, links, :release => r,
+          :issues => @project.issues_for_release(r), :project => @project).
+          render_template("release")
+  end
+
+  def generate_component_html_str links, c
+	ErbHtml.new(@template_dir, links, :component => c,
+          :issues => @project.issues_for_component(c), :project => @project).
+          render_template("component")
+  end
+
+  def generate_links
+   ## build up links
+    links = {}
+    @project.releases.each { |r| links[r] = "release-#{r.name}.html" }
+    @project.issues.each { |i| links[i] = "issue-#{i.id}.html" }
+    @project.components.each { |c| links[c] = "component-#{c.name}.html" }
+    links["unassigned"] = "unassigned.html" # special case: unassigned
+    links["index"] = "index.html" # special case: index
+
+    links
+  end
+
+
+  def render_all
+    Dir.mkdir @dir unless File.exists? @dir
+    SUPPORT_FILES.each { |f| FileUtils.cp File.join(@template_dir, f), @dir }
+
+    links = generate_links
+ 
+    @project.issues.each do |issue|
+      fn = File.join @dir, links[issue]
+      File.open(fn, "w") { |f| f.puts generate_issue_html_str links, issue}
     end
 
     @project.releases.each do |r|
       fn = File.join @dir, links[r]
-      #puts "Generating #{fn}..."
-      File.open(fn, "w") do |f|
-        f.puts ErbHtml.new(@template_dir, links, :release => r,
-          :issues => @project.issues_for_release(r), :project => @project).
-          render_template("release")
-      end
+      File.open(fn, "w") { |f| f.puts generate_release_html_str links, r}
     end
 
     @project.components.each do |c|
       fn = File.join @dir, links[c]
-      #puts "Generating #{fn}..."
-      File.open(fn, "w") do |f|
-        f.puts ErbHtml.new(@template_dir, links, :component => c,
-          :issues => @project.issues_for_component(c), :project => @project).
-          render_template("component")
-      end
+      File.open(fn, "w") { |f| f.puts generate_component_html_str links, c}
     end
 
     fn = File.join @dir, links["unassigned"]
-    #puts "Generating #{fn}..."
     File.open(fn, "w") do |f|
       f.puts ErbHtml.new(@template_dir, links,
         :issues => @project.unassigned_issues, :project => @project).

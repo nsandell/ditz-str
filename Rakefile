@@ -16,9 +16,9 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "ditz-str"
   gem.homepage = "http://github.com/nsandell/ditz-str"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.license = "GPL"
+  gem.summary = "Customized STR version of ditz issue tracking system (original by William Morgan)."
+  gem.description = "Modification of the ditz issue tracking originally created by William Morgan.  First new feature is a portable web server for interacting with the issue system."
   gem.email = "nils.sandell@systemstechnologyresearch.com"
   gem.authors = ["Nils F. Sandell"]
   # dependencies defined in Gemfile
@@ -42,7 +42,7 @@ end
 
 task :default => :test
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 

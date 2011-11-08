@@ -4,36 +4,14 @@ include WEBrick
 
 module Ditz
 
-class BrickView < View
+class BrickView < HtmlView
 	def initialize project, config, dir
-		@project = project
-    		@config = config
-    		@dir = dir
-    		@template_dir = File.dirname Ditz::find_ditz_file("index.rhtml")
-	end
-
-	def generate_links
-    		links = {}
-    		@project.releases.each { |r| links[r] = "release-#{r.name}.html" }
-    		@project.issues.each { |i| links[i] = "issue-#{i.id}.html" }
-    		@project.components.each { |c| links[c] = "component-#{c.name}.html" }
-    		links["unassigned"] = "unassigned.html" # special case: unassigned
-    		links["index"] = "index.html" # special case: index
-    		links["feed"]= "feed.xml" # special case: feed
-		return links
+		super.initialize project, config, dir
 	end
 
 	def link_to name, text
 		links = generate_links
 		return "<a href=\"#{links[name]}\">#{text}</a>"
-	end
-
-	def generate_index
-		links = generate_links
-		past_rels, upcoming_rels = @project.releases.partition { |r| r.released? }
-		return  ErbHtml.new(@template_dir, links, :project => @project,
-				    :past_releases => past_rels, :upcoming_releases => upcoming_rels,
-				    :components => @project.components).render_template("index_brick")
 	end
 
 	def generate_new_issue options
@@ -42,6 +20,7 @@ class BrickView < View
 		return erb.result binding()
 	end
 
+=begin
 	def generate_release relname
 		links = generate_links
 
@@ -100,6 +79,7 @@ HERE
 			return "<html><body>Multiple issues found...</body></html>"
 		end
 	end
+=end
 end
 
 class DitzServlet < HTTPServlet::AbstractServlet

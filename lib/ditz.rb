@@ -60,9 +60,8 @@ end
 module_function :home_dir, :find_dir_containing, :find_ditz_file, :load_plugins
 end
 
-require 'model-objects'
-require 'operator'
-require 'views'
-require 'hook'
-require 'file-storage'
-
+require 'ditz/model-objects'
+require 'ditz/operator'
+require 'ditz/views'
+require 'ditz/hook'
+require 'ditz/file-storage'
