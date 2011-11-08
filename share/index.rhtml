@@ -101,6 +101,19 @@
   </table>
 <% end %>
 
+<% if not actions.empty? %>
+	<h2>Actions</h2><br>
+	<% firstitem = true %>
+	<% actions.each_pair do |action,link| %>
+		<% if firstitem %>
+			<%= "<a href=\"#{link}\">#{action}</a>" %>
+			<% firstitem = false %>
+		<% else %>
+			<%= " | <a href=\"#{link}\">#{action}</a>" %>
+		<% end %>
+	<% end %>
+<% end %>
+
 <h2>Recent activity</h2>
 
 <table class="log">
