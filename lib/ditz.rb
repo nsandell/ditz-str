@@ -1,4 +1,4 @@
-module Ditz
+module DitzStr
 
 VERSION = "0.5"
 
@@ -16,9 +16,9 @@ def self.has_readline= val
 end
 
 begin
-  Ditz::has_readline = false
+  DitzStr::has_readline = false
   require 'readline'
-  Ditz::has_readline = true
+  DitzStr::has_readline = true
 rescue LoadError
   # do nothing
 end
@@ -47,11 +47,11 @@ def find_ditz_file fn
 end
 
 def load_plugins fn
-  Ditz::debug "loading plugins from #{fn}"
+  DitzStr::debug "loading plugins from #{fn}"
   plugins = YAML::load_file $opts[:plugins_file]
   plugins.each do |p|
-    fn = Ditz::find_ditz_file "plugins/#{p}.rb"
-    Ditz::debug "loading plugin #{p.inspect} from #{fn}"
+    fn = DitzStr::find_ditz_file "plugins/#{p}.rb"
+    DitzStr::debug "loading plugin #{p.inspect} from #{fn}"
     require File.expand_path(fn)
   end
   plugins
@@ -60,8 +60,8 @@ end
 module_function :home_dir, :find_dir_containing, :find_ditz_file, :load_plugins
 end
 
-require 'ditz/model-objects'
-require 'ditz/operator'
-require 'ditz/views'
-require 'ditz/hook'
-require 'ditz/file-storage'
+require 'ditzstr/model-objects'
+require 'ditzstr/operator'
+require 'ditzstr/views'
+require 'ditzstr/hook'
+require 'ditzstr/file-storage'

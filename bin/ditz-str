@@ -3,7 +3,7 @@
 ## requires are split in two for efficiency reasons: ditz should be really
 ## fast when using it for completion.
 require 'operator'
-op = Ditz::Operator.new
+op = DitzStr::Operator.new
 
 ## a secret option for shell completion
 if ARGV.include? '--commands'
@@ -19,16 +19,16 @@ end
 require 'fileutils'
 require 'pathname'
 require 'trollop'; include Trollop
-require "ditz"
+require "ditz-str"
 
 CONFIG_FN = ".ditz-config"
 PLUGIN_FN = ".ditz-plugins"
 
-config_dir = Ditz::find_dir_containing CONFIG_FN
-plugin_dir = Ditz::find_dir_containing PLUGIN_FN
+config_dir = DitzStr::find_dir_containing CONFIG_FN
+plugin_dir = DitzStr::find_dir_containing PLUGIN_FN
 
 $opts = options do
-  version "ditz #{Ditz::VERSION}"
+  version "ditz #{DitzStr::VERSION}"
   opt :issue_dir, "Issue database dir", :default => "bugs"
   opt :config_file, "Configuration file", :default => File.join(config_dir || ".", CONFIG_FN)
   opt :plugins_file, "Plugins file", :default => File.join(plugin_dir || ".", PLUGIN_FN)
@@ -38,14 +38,14 @@ $opts = options do
 end
 $verbose = true if $opts[:verbose]
 
-Ditz::HookManager.register :startup, <<EOS
+DitzStr::HookManager.register :startup, <<EOS
 Executes at startup
 
 Variables: project, config
 No return value.
 EOS
 
-Ditz::HookManager.register :after_add, <<EOS
+DitzStr::HookManager.register :after_add, <<EOS
 Executes before terminating if new issue files has been created.
 Basically you want to instruct your SCM that these files has
 been added.
@@ -54,7 +54,7 @@ Variables: project, config, issues
 No return value.
 EOS
 
-Ditz::HookManager.register :after_delete, <<EOS
+DitzStr::HookManager.register :after_delete, <<EOS
 Executes before terminating if new issue files has been deleted.
 Basically you want to instruct your SCM that these files has
 been deleted.
@@ -63,7 +63,7 @@ Variables: project, config, issues
 No return value.
 EOS
 
-Ditz::HookManager.register :after_update, <<EOS
+DitzStr::HookManager.register :after_update, <<EOS
 Executes before terminating if new issue files has been updated.
 You may want to instruct your SCM about these changes.
 Note that new issues are not considered updated.
@@ -73,31 +73,31 @@ No return value.
 EOS
 
 if $opts[:list_hooks]
-  Ditz::HookManager.print_hooks
+  DitzStr::HookManager.print_hooks
   exit 0
 end
 
 begin
-  Ditz::load_plugins $opts[:plugins_file]
+  DitzStr::load_plugins $opts[:plugins_file]
 rescue SystemCallError => e
-  Ditz::debug "can't load plugins file: #{e.message}"
+  DitzStr::debug "can't load plugins file: #{e.message}"
 end
 
 config = begin
-  Ditz::debug "loading config from #{$opts[:config_file]}"
-  Ditz::Config.from $opts[:config_file]
+  DitzStr::debug "loading config from #{$opts[:config_file]}"
+  DitzStr::Config.from $opts[:config_file]
 rescue SystemCallError => e
   if ARGV.member? "<options>"
     ## special case here. if we're asking for tab completion, and the config
     ## file doesn't exist, don't do the interactive building. just make a
     ## fake empty one and carry on.
-    Ditz::Config.new
+    DitzStr::Config.new
   else
     puts <<EOS
 I wasn't able to find a configuration file #{$opts[:config_file]}.
 We'll set it up right now.
 EOS
-    Ditz::Config.create_interactively.save! $opts[:config_file]
+    DitzStr::Config.create_interactively.save! $opts[:config_file]
   end
 end
 
@@ -111,7 +111,7 @@ case cmd # some special commands not handled by Ditz::Operator
 when "init"
   die "#{issue_dir} directory already exists" if issue_dir.exist?
   issue_dir.mkdir
-  fn = issue_dir + Ditz::FileStorage::PROJECT_FN
+  fn = issue_dir + DitzStr::FileStorage::PROJECT_FN
   project = op.init
   project.save! fn
   puts "Ok, #{issue_dir} directory created successfully."
@@ -121,23 +121,23 @@ when "help"
   exit
 end
 
-$project_root = Ditz::find_dir_containing(issue_dir + Ditz::FileStorage::PROJECT_FN)
+$project_root = DitzStr::find_dir_containing(issue_dir + DitzStr::FileStorage::PROJECT_FN)
 die "No #{issue_dir} directory---use 'ditz init' to initialize" unless $project_root
 $project_root += issue_dir
 
-storage = Ditz::FileStorage.new $project_root
+storage = DitzStr::FileStorage.new $project_root
 project = begin
   storage.load
-rescue SystemCallError, Ditz::Project::Error => e
+rescue SystemCallError, DitzStr::Project::Error => e
   die "#{e.message} (use 'init' to initialize)"
 end
 
-Ditz::HookManager.run :startup, project, config
+DitzStr::HookManager.run :startup, project, config
 
-Ditz::debug "executing command #{cmd}"
+DitzStr::debug "executing command #{cmd}"
 begin
   op.do cmd, project, config, ARGV
-rescue Ditz::Operator::Error, Ditz::Release::Error, Ditz::Project::Error, Ditz::Issue::Error => e
+rescue DitzStr::Operator::Error, DitzStr::Release::Error, DitzStr::Project::Error, DitzStr::Issue::Error => e
   $stderr.puts "Error: #{e.message}"
   exit(-1)
 rescue Errno::EPIPE, Interrupt
@@ -155,21 +155,21 @@ storage.save project
 
 project.issues.each { |i| i.pathname = storage.filename_for_issue(i) }
 unless project.added_issues.empty?
-  unless Ditz::HookManager.run :after_add, project, config, project.added_issues
+  unless DitzStr::HookManager.run :after_add, project, config, project.added_issues
     puts "You may have to inform your SCM that the following files have been added:"
     project.added_issues.each { |i| puts "  " + storage.filename_for_issue(i) }
   end
 end
 
 unless project.deleted_issues.empty?
-  unless Ditz::HookManager.run :after_delete, project, config, project.deleted_issues
+  unless DitzStr::HookManager.run :after_delete, project, config, project.deleted_issues
     puts "You may have to inform your SCM that the following files have been deleted:"
     project.deleted_issues.each { |i| puts "  " + storage.filename_for_issue(i) }
   end
 end
 
 unless changed_not_added_issues.empty?
-  unless Ditz::HookManager.run :after_update, project, config, changed_not_added_issues
+  unless DitzStr::HookManager.run :after_update, project, config, changed_not_added_issues
     puts "You may have to inform your SCM that the following files have been modified:"
     changed_not_added_issues.each { |i| puts "  " + storage.filename_for_issue(i) }
   end
@@ -178,7 +178,7 @@ end
 ## hack upon a hack
 if project.changed?
   project.pathname = storage.filename_for_project
-  unless Ditz::HookManager.run :after_update, project, config, [project]
+  unless DitzStr::HookManager.run :after_update, project, config, [project]
     puts "You may have to inform your SCM that the following files have been modified:"
     puts "  " + storage.filename_for_project
   end
