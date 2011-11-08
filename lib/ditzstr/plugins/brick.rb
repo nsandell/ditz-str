@@ -95,10 +95,12 @@ class DitzServlet < HTTPServlet::AbstractServlet
 	end
 
 	def do_GET(req,resp)
+		puts "HOW IN THE FUCK"
 		if req.path=="/index.html" or req.path=="/"
 			#puts req.query['wee']
 			resp['content-type'] = 'text/html'
-			resp.body = @brickview.generate_index
+			puts "How in the fuck?"
+			resp.body = @brickview.generate_index 
 		elsif req.path.start_with? '/release-'
 			relname = req.path.sub('/release-','').sub('.html','')
 			resp['content-type'] = 'text/html'

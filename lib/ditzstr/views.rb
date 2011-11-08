@@ -64,7 +64,7 @@ class HtmlView < View
     @template_dir = File.dirname Ditz::find_ditz_file("../share/index.rhtml")
   end
 
-  def generate_issue_html_str links, issue
+  def generate_issue_html_str links, issue, actions={}
       
       extra_summary = self.class.view_additions_for(:issue_summary).map { |b| b[issue, @config] }.compact
       extra_details = self.class.view_additions_for(:issue_details).map { |b| b[issue, @config] }.compact
@@ -72,7 +72,7 @@ class HtmlView < View
       erb = ErbHtml.new(@template_dir, links, :issue => issue,
         :release => (issue.release ? @project.release_for(issue.release) : nil),
         :component => @project.component_for(issue.component),
-        :project => @project)
+        :project => @project,:commands=>{},:actions=>actions)
 
       extra_summary_html = extra_summary.map { |string, extra_binding| erb.render_string string, extra_binding }.join
       extra_details_html = extra_details.map { |string, extra_binding| erb.render_string string, extra_binding }.join
@@ -85,6 +85,13 @@ class HtmlView < View
 	ErbHtml.new(@template_dir, links, :release => r,
           :issues => @project.issues_for_release(r), :project => @project).
           render_template("release")
+  end
+
+  def generate_index_html_str links, past_rels, upcoming_rels, actions={}
+	ErbHtml.new(@template_dir, links, :project => @project,
+          :past_releases => past_rels, :upcoming_releases => upcoming_rels,
+          :components => @project.components, :actions=>actions).
+          render_template("index")
   end
 
   def generate_component_html_str links, c
@@ -138,10 +145,7 @@ class HtmlView < View
     fn = File.join @dir, links["index"]
     #puts "Generating #{fn}..."
     File.open(fn, "w") do |f|
-      f.puts ErbHtml.new(@template_dir, links, :project => @project,
-        :past_releases => past_rels, :upcoming_releases => upcoming_rels,
-        :components => @project.components).
-        render_template("index")
+      f.puts generate_index_html_str(links, past_rels, upcoming_rels)
     end
     puts "Local generated URL: file://#{File.expand_path(fn)}"
   end
