@@ -50,7 +50,7 @@ def load_plugins fn
   DitzStr::debug "loading plugins from #{fn}"
   plugins = YAML::load_file $opts[:plugins_file]
   plugins.each do |p|
-    fn = DitzStr::find_ditz_file "plugins/#{p}.rb"
+    fn = DitzStr::find_ditz_file "ditzstr/plugins/#{p}.rb"
     DitzStr::debug "loading plugin #{p.inspect} from #{fn}"
     require File.expand_path(fn)
   end

@@ -40,7 +40,7 @@
 ##   2. run 'ditz reconfigure' and answer its questions
 ##   3. run 'ditz sync' with abandon
 
-module Ditz
+module DitzStr
 
 class Config
   field :git_sync_local_branch, :prompt => "Local bugs branch name for ditz sync", :default => "bugs"

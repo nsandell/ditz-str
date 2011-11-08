@@ -1,4 +1,4 @@
-module Ditz
+module DitzStr
   class HookManager
     def initialize
       @descs = {}
@@ -50,13 +50,13 @@ EOS
 
     def hooks_for name
       if @blocks[name].nil? || @blocks[name].empty?
-        dirs = [Ditz::home_dir, Ditz::find_dir_containing(".ditz")].compact.map do |d|
+        dirs = [DitzStr::home_dir, DitzStr::find_dir_containing(".ditz")].compact.map do |d|
           File.join d, ".ditz", "hooks"
         end
-        Ditz::debug "looking for hooks in #{dirs.join(" and ")}"
+        DitzStr::debug "looking for hooks in #{dirs.join(" and ")}"
         files = dirs.map { |d| Dir[File.join(d, "*.rb")] }.flatten
         files.each do |fn|
-          Ditz::debug "loading hook file #{fn}"
+          DitzStr::debug "loading hook file #{fn}"
           require File.expand_path(fn)
         end
       end

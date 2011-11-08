@@ -1,6 +1,6 @@
 require 'erb'
 
-module Ditz
+module DitzStr
 
 ## pass through any variables needed for template generation, and add a bunch
 ## of HTML formatting utility methods.

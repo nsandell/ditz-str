@@ -1,7 +1,7 @@
-require 'view'
-require 'html'
+require 'ditzstr/view'
+require 'ditzstr/html'
 
-module Ditz
+module DitzStr
 
 class ScreenView < View
   def initialize project, config, device=$stdout
@@ -61,7 +61,7 @@ class HtmlView < View
     @project = project
     @config = config
     @dir = dir
-    @template_dir = File.dirname Ditz::find_ditz_file("../share/index.rhtml")
+    @template_dir = File.dirname DitzStr::find_ditz_file("../share/index.rhtml")
   end
 
   def generate_issue_html_str links, issue, actions={}

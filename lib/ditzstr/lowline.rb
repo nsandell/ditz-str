@@ -1,5 +1,5 @@
 require 'tempfile'
-require "util"
+require "ditzstr/util"
 
 class Numeric
   def to_pretty_s
@@ -81,7 +81,7 @@ module Lowline
 
     while true
       prompt = [q, default_s, tail].compact.join
-      if Ditz::has_readline?
+      if DitzStr::has_readline?
         ans = Readline::readline(prompt)
       else
         print prompt
@@ -111,13 +111,13 @@ module Lowline
     puts "#{q} (ctrl-d, ., or /stop to stop, /edit to edit, /reset to reset):"
     ans = ""
     while true
-      if Ditz::has_readline?
+      if DitzStr::has_readline?
         line = Readline::readline('> ')
       else
         (line = STDIN.gets) && line.strip!
       end
       if line
-        if Ditz::has_readline?
+        if DitzStr::has_readline?
           Readline::HISTORY.push(line)
         end
         case line

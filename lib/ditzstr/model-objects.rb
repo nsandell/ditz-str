@@ -1,6 +1,6 @@
-require 'model'
+require 'ditzstr/model'
 
-module Ditz
+module DitzStr
 
 class Component < ModelObject
   field :name
@@ -37,7 +37,7 @@ class Project < ModelObject
   class Error < StandardError; end
 
   field :name, :prompt => "Project name", :default_generator => lambda { File.basename(Dir.pwd) }
-  field :version, :default => Ditz::VERSION, :ask => false
+  field :version, :default => DitzStr::VERSION, :ask => false
   field :components, :multi => true, :generator => :get_components
   field :releases, :multi => true, :ask => false
 

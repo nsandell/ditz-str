@@ -1,7 +1,7 @@
 require 'yaml'
 require 'sha1'
-require "lowline"; include Lowline
-require "util"
+require "ditzstr/lowline"; include Lowline
+require "ditzstr/util"
 
 class Time
   alias :old_to_yaml :to_yaml
@@ -10,7 +10,7 @@ class Time
   end
 end
 
-module Ditz
+module DitzStr
 
 class ModelObject
   class ModelError < StandardError; end

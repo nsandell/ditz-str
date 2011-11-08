@@ -1,4 +1,4 @@
-module Ditz
+module DitzStr
 
 class View
   def self.add_to_view type, &block

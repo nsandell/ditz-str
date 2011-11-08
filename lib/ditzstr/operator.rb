@@ -1,6 +1,6 @@
 require 'fileutils'
 
-module Ditz
+module DitzStr
 
 class Operator
   class Error < StandardError; end
@@ -138,7 +138,7 @@ class Operator
     end
     return help_single(command) if command
     puts <<EOS
-Ditz commands:
+DitzStr commands:
 
 EOS
     ops = self.class.operations

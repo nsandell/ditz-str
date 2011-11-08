@@ -28,14 +28,14 @@
 
 require 'time'
 
-module Ditz
+module DitzStr
 class Issue
   field :git_branch, :ask => false
 
   def git_commits
     return @git_commits if @git_commits
 
-    filters = ["--grep=\"Ditz-issue: #{id}\""]
+    filters = ["--grep=\"DitzStr-issue: #{id}\""]
     filters << "master..#{git_branch}" if git_branch
 
     output = filters.map do |f|
@@ -136,7 +136,7 @@ class Operator
     }.map { |k, v| opts[k] ? v : "" }.join(" ")
 
     comment = "# #{issue.name}: #{issue.title}"
-    tag = "Ditz-issue: #{issue.id}"
+    tag = "DitzStr-issue: #{issue.id}"
     message = if opts[:message] && !opts[:edit]
       "#{opts[:message]}\n\n#{tag}"
     elsif opts[:message] && opts[:edit]

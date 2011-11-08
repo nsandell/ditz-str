@@ -2,11 +2,13 @@ require 'webrick'
 require 'erb'
 include WEBrick
 
-module Ditz
+module DitzStr
 
 class BrickView < HtmlView
 	def initialize project, config, dir
-		super.initialize project, config, dir
+		super project, config, dir
+
+		puts Gem.datadir("ditz-str")
 	end
 
 	def link_to name, text
@@ -82,7 +84,7 @@ HERE
 =end
 end
 
-class DitzServlet < HTTPServlet::AbstractServlet
+class DitzStrServlet < HTTPServlet::AbstractServlet
 
 
 	def initialize(server, options)
@@ -156,10 +158,10 @@ class Operator
 	operation :brick, "Start brick web server for issue management.", :maybe_dir
 	def brick project, config, dir
 		brickview = BrickView.new(project,config, dir)
-		sharedir = File.dirname Ditz::find_ditz_file("index.rhtml")
+		sharedir = File.dirname DitzStr::find_ditz_file("index.rhtml")
 		start_webrick { |server| 
-			imgdir = File.dirname Ditz::find_ditz_file("index.rhtml")
-        		server.mount('/', DitzServlet, {:brickview => brickview, :dir =>sharedir, :user=>config.user, :project=>project, :config=>config })
+			imgdir = File.dirname DitzStr::find_ditz_file("index.rhtml")
+        		server.mount('/', DitzStrServlet, {:brickview => brickview, :dir =>sharedir, :user=>config.user, :project=>project, :config=>config })
 		}
 	end
 end

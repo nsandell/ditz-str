@@ -17,7 +17,7 @@
 ##      root
 ##   2. use the above commands to abandon
 
-module Ditz
+module DitzStr
 class Issue
   field :claimer, :ask => false
 
