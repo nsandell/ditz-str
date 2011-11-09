@@ -2,7 +2,7 @@
 
 ## requires are split in two for efficiency reasons: ditz should be really
 ## fast when using it for completion.
-require 'operator'
+require 'ditzstr/operator'
 op = DitzStr::Operator.new
 
 ## a secret option for shell completion
@@ -18,8 +18,8 @@ end
 
 require 'fileutils'
 require 'pathname'
-require 'trollop'; include Trollop
-require "ditz-str"
+require 'ditzstr/trollop'; include Trollop
+require "ditzstr"
 
 CONFIG_FN = ".ditz-config"
 PLUGIN_FN = ".ditz-plugins"

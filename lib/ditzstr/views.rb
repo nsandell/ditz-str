@@ -61,7 +61,7 @@ class HtmlView < View
     @project = project
     @config = config
     @dir = dir
-    @template_dir = File.dirname DitzStr::find_ditz_file("../share/index.rhtml")
+    @template_dir = File.dirname DitzStr::find_ditz_file("index.rhtml")
   end
 
   def generate_issue_html_str links, issue, actions={}

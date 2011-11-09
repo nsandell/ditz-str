@@ -41,16 +41,17 @@ end
 
 ## my brilliant solution to the 'gem datadir' problem
 def find_ditz_file fn
-  dir = $:.find { |p| File.exist? File.expand_path(File.join(p, fn)) }
-  raise "can't find #{fn} in any load path" unless dir
-  File.expand_path File.join(dir, fn)
+  #dir = $:.find { |p| File.exist? File.expand_path(File.join(p, fn)) }
+  dir = File.exist? File.expand_path(File.join(Gem.datadir("ditz-str"), fn))
+  raise "can't find #{fn} in any load path (tried #{File.join(Gem.datadir("ditz-str"),fn)}" unless dir
+  File.expand_path File.join(Gem.datadir("ditz-str"), fn)
 end
 
 def load_plugins fn
   DitzStr::debug "loading plugins from #{fn}"
   plugins = YAML::load_file $opts[:plugins_file]
   plugins.each do |p|
-    fn = DitzStr::find_ditz_file "ditzstr/plugins/#{p}.rb"
+    fn = DitzStr::find_ditz_file "plugins/#{p}.rb"
     DitzStr::debug "loading plugin #{p.inspect} from #{fn}"
     require File.expand_path(fn)
   end
