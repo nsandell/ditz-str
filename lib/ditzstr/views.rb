@@ -87,7 +87,8 @@ class HtmlView < View
           render_template("release")
   end
 
-  def generate_index_html_str links, past_rels, upcoming_rels, actions={}
+  def generate_index_html_str links, actions={}
+    	past_rels, upcoming_rels = @project.releases.partition { |r| r.released? }
 	ErbHtml.new(@template_dir, links, :project => @project,
           :past_releases => past_rels, :upcoming_releases => upcoming_rels,
           :components => @project.components, :actions=>actions).
@@ -141,11 +142,9 @@ class HtmlView < View
         render_template("unassigned")
     end
 
-    past_rels, upcoming_rels = @project.releases.partition { |r| r.released? }
     fn = File.join @dir, links["index"]
-    #puts "Generating #{fn}..."
     File.open(fn, "w") do |f|
-      f.puts generate_index_html_str(links, past_rels, upcoming_rels)
+      f.puts generate_index_html_str links
     end
     puts "Local generated URL: file://#{File.expand_path(fn)}"
   end
