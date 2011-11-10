@@ -15,15 +15,29 @@ class BrickView < HtmlView
 		return "<a href=\"#{links[name]}\">#{text}</a>"
 	end
 
+	def generate_edit_issue issue_id
+
+	end
+
 	def generate_new_issue options
     		past_rels, upcoming_rels = @project.releases.partition { |r| r.released? }
 		erb = ERB.new IO.read(File.join(@template_dir, "new_issue.rhtml"))
 		return erb.result binding()
 	end
 
+	def generate_new_component
+		erb = ERB.new IO.read(File.join(@template_dir, "new_component.rhtml"))
+		return erb.result binding()
+	end
+
+	def generate_new_release
+		erb = ERB.new IO.read(File.join(@template_dir,"new_release.rhtml"))
+		return erb.result binding()
+	end
+
 	def generate_index 
 		links = generate_links
-		generate_index_html_str links, {'New Issue'=>'/new_issue.html'}
+		generate_index_html_str links, {'New Issue'=>'/new_issue.html', 'New Component'=>'/new_component.html'}
 	end
 
 	def generate_release relname
@@ -63,7 +77,6 @@ end
 
 class DitzStrServlet < HTTPServlet::AbstractServlet
 
-
 	def initialize(server, options)
 		super(server)
 		@project = options[:project]
@@ -101,6 +114,12 @@ class DitzStrServlet < HTTPServlet::AbstractServlet
 			options[:creator] = @user
 			resp['content-type'] = 'text/html'
 			resp.body = @brickview.generate_new_issue options
+		elsif req.path=='/new_component.html'
+			resp['content-type'] = 'text/html'
+			resp.body = @brickview.generate_new_component
+		elsif req.path=='/new_release.html'
+			resp['content-type'] = 'text/html'
+			resp.body = @brickview.generate_new_release
 		else
 			HTTPServlet::FileHandler.new(@server,@sharedir).do_GET(req,resp)
 		end
@@ -108,12 +127,24 @@ class DitzStrServlet < HTTPServlet::AbstractServlet
 
 	def do_POST(req,resp)
 		resp['content-type'] = 'text/html'
-		issue = Issue.create({:project => @project, :config=> @config},{:title => req.query['title'], :desc => req.query['description'], :type => req.query['type'], 
-			      :component => req.query['component'], :release => req.query['release'], :reporter => 'poop', :comments => req.query['comments']});
-		issue.log "created", @config.user, req.query['comments']
-		resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/component-#{req.query['component']}.html\"></head><body>Redirecting...</body></html>"
-		@project.add_issue issue
-		@project.assign_issue_names!
+
+		if req.path.start_with? '/new_issue.html'
+			issue = Issue.create({:project => @project, :config=> @config},{:title => req.query['title'], :desc => req.query['description'], :type => req.query['type'], 
+				      :component => req.query['component'], :release => req.query['release'], :reporter => 'poop', :comments => req.query['comments']});
+			issue.log "created", @config.user, req.query['comments']
+			resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/component-#{req.query['component']}.html\"></head><body>Redirecting...</body></html>"
+			@project.add_issue issue
+			@project.assign_issue_names!
+		elsif req.path.start_with? '/new_component.html'
+			component = Component.create({:project => @project, :config=>@config},{:name => req.query['name']});
+			@project.add_component component
+			resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/index.html\"></head><body>Redirecting...</body></html>"
+		elsif req.path.start_with? '/new_release.html'
+			release = Release.create({:project => @project, :config=>@config},{:name => req.query['name']})
+			release.log "created", @config.user, req.query['comments']
+			@project.add_release release
+			resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/index.html\"></head><body>Redirecting...</body></html>"
+		end
 	end
 end
 
