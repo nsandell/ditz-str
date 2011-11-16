@@ -37,7 +37,7 @@ class BrickView < HtmlView
 
 	def generate_index 
 		links = generate_links
-		generate_index_html_str links, {'New Issue'=>'/new_issue.html', 'New Component'=>'/new_component.html'}
+		generate_index_html_str links, {'New Issue'=>'/new_issue.html', 'New Component'=>'/new_component.html', 'New Release'=>'/new_release.html'}
 	end
 
 	def generate_release relname
@@ -61,6 +61,7 @@ class BrickView < HtmlView
 	end
 
 	def generate_issue issuename
+
 		links = generate_links
 		issues_vec = @project.issues_for issuename
 
