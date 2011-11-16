@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Issue creation.
+desc: Should be able to create issues from the index page, component pages, and release pages.
+type: :feature
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :unstarted
+disposition: 
+creation_time: 2011-11-10 04:39:22.698732 Z
+references: []
+
+id: d0c7d04b014d705c5fd865e4d487b5e5b6983c33
+log_events: 
+- - 2011-11-10 04:40:19.788100 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-10 04:55:31.796628 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - assigned to release Version 0.1 from unassigned
+  - ""

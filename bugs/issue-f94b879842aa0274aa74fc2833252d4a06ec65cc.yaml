@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Reference adding.
+desc: Add ability to add references to issues.
+type: :feature
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :unstarted
+disposition: 
+creation_time: 2011-11-10 04:42:44.864821 Z
+references: []
+
+id: f94b879842aa0274aa74fc2833252d4a06ec65cc
+log_events: 
+- - 2011-11-10 04:42:46.176843 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-10 04:55:50.612038 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - assigned to release Version 0.1 from unassigned
+  - ""

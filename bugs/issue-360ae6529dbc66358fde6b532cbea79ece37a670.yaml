@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Edit issues.
+desc: Add the ability to edit issues.
+type: :feature
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :unstarted
+disposition: 
+creation_time: 2011-11-10 04:48:34.189709 Z
+references: []
+
+id: 360ae6529dbc66358fde6b532cbea79ece37a670
+log_events: 
+- - 2011-11-10 04:48:34.733561 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-10 04:54:47.037943 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - assigned to release Version 0.1 from unassigned
+  - ""

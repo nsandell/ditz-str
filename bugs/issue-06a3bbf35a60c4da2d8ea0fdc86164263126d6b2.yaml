@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Set component.
+desc: Set a component for an issue.
+type: :feature
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :unstarted
+disposition: 
+creation_time: 2011-11-10 04:50:04.352971 Z
+references: []
+
+id: 06a3bbf35a60c4da2d8ea0fdc86164263126d6b2
+log_events: 
+- - 2011-11-10 04:50:04.840674 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-10 04:54:28.390552 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - assigned to release Version 0.1 from unassigned
+  - ""

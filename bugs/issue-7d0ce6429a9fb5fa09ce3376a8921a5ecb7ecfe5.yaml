@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Issue closing.
+desc: Ability to close issues.
+type: :feature
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :unstarted
+disposition: 
+creation_time: 2011-11-10 04:44:00.002322 Z
+references: []
+
+id: 7d0ce6429a9fb5fa09ce3376a8921a5ecb7ecfe5
+log_events: 
+- - 2011-11-10 04:44:01.202706 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-10 04:55:09.053249 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - assigned to release Version 0.1 from unassigned
+  - ""

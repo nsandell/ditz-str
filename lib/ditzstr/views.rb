@@ -81,9 +81,9 @@ class HtmlView < View
 
   end
 
-  def generate_release_html_str links, r
+  def generate_release_html_str links, r, actions={}
 	ErbHtml.new(@template_dir, links, :release => r,
-          :issues => @project.issues_for_release(r), :project => @project).
+          :issues => @project.issues_for_release(r), :project => @project, :actions=>actions).
           render_template("release")
   end
 
@@ -95,8 +95,8 @@ class HtmlView < View
           render_template("index")
   end
 
-  def generate_component_html_str links, c
-	ErbHtml.new(@template_dir, links, :component => c,
+  def generate_component_html_str links, c, actions={}
+	ErbHtml.new(@template_dir, links, :component => c, :actions=>actions,
           :issues => @project.issues_for_component(c), :project => @project).
           render_template("component")
   end

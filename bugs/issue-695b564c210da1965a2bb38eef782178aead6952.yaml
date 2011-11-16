@@ -1,0 +1,26 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Component creation.
+desc: Ability to add components from index page.
+type: :feature
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :closed
+disposition: :fixed
+creation_time: 2011-11-10 04:41:51.226658 Z
+references: []
+
+id: 695b564c210da1965a2bb38eef782178aead6952
+log_events: 
+- - 2011-11-10 04:41:52.201494 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-10 04:54:56.397576 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - assigned to release Version 0.1 from unassigned
+  - ""
+- - 2011-11-10 04:58:39.784361 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - closed with disposition fixed
+  - ""

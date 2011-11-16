@@ -47,7 +47,7 @@ class BrickView < HtmlView
 
 		links = generate_links
 		r = @project.release_for relname
-		generate_release_html_str links, r
+		generate_release_html_str links, r, {'New Issue'=>issue_link}
 	end
 
 	def generate_component comp_name
@@ -57,7 +57,7 @@ class BrickView < HtmlView
 
 		links = generate_links
 		c = @project.component_for comp_name
-		generate_component_html_str links, c
+		generate_component_html_str links, c, {'New Issue'=>issue_link}
 	end
 
 	def generate_issue issuename
