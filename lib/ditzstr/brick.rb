@@ -15,6 +15,20 @@ class BrickView < HtmlView
 		return "<a href=\"#{links[name]}\">#{text}</a>"
 	end
 
+	def comment_on_issue issuename, comment
+		issues_vec = @project.issues_for issuename
+	
+		case issues_vec.size
+               	when 0; return "<html><body>Error - attempted to comment on non-existant issue.</body></html>"
+               	when 1;
+                 	iss = issues_vec.first
+			iss.log "commented", @config.user, comment
+			return "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/issue-#{issuename}.html\"></head><body>Redirecting...</body></html>"
+                else
+                	return "<html><body>Error - attempted to comment on multiple issues.</body></html>"
+               	end
+	end
+
 	def generate_edit_issue issue_id
 
 	end
@@ -145,6 +159,12 @@ class DitzStrServlet < HTTPServlet::AbstractServlet
 			release.log "created", @config.user, req.query['comments']
 			@project.add_release release
 			resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/index.html\"></head><body>Redirecting...</body></html>"
+		elsif req.path.start_with? '/issue-'
+
+			issue = "#{req.path}"
+			issue = issue.gsub('/issue-','')
+			issue = issue.gsub('.html','')
+			resp.body = @brickview.comment_on_issue issue, req.query['comment']
 		end
 	end
 end
