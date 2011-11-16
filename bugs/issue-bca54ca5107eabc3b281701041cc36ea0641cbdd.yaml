@@ -5,8 +5,8 @@ type: :feature
 component: WEBrick interface
 release: Version 0.1
 reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2011-11-10 04:40:43.155443 Z
 references: []
 
@@ -19,4 +19,8 @@ log_events:
 - - 2011-11-10 04:55:22.108784 Z
   - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
   - assigned to release Version 0.1 from unassigned
+  - ""
+- - 2011-11-16 02:25:56.629980 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - closed with disposition fixed
   - ""
