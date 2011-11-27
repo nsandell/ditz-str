@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: HTML rendering conflicts with new RHTML files
+desc: The current rhtml was designed without html rendering in mind, which is now broken.
+type: :bugfix
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :closed
+disposition: :fixed
+creation_time: 2011-11-27 18:14:16.963597 Z
+references: []
+
+id: a04462fa22ab6e1b02cfdd052d1f6c6f491f08f5
+log_events: 
+- - 2011-11-27 18:14:18.179495 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""
+- - 2011-11-27 18:14:49.974722 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - closed with disposition fixed
+  - Reorganized all brick arguments into one hash which is empty for simple html generation.

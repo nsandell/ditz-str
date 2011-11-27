@@ -64,7 +64,7 @@ class HtmlView < View
     @template_dir = File.dirname DitzStr::find_ditz_file("index.rhtml")
   end
 
-  def generate_issue_html_str links, issue, actions={}
+  def generate_issue_html_str links, issue, brickargs={}
       
       extra_summary = self.class.view_additions_for(:issue_summary).map { |b| b[issue, @config] }.compact
       extra_details = self.class.view_additions_for(:issue_details).map { |b| b[issue, @config] }.compact
@@ -72,7 +72,7 @@ class HtmlView < View
       erb = ErbHtml.new(@template_dir, links, :issue => issue,
         :release => (issue.release ? @project.release_for(issue.release) : nil),
         :component => @project.component_for(issue.component),
-        :project => @project,:commands=>{},:actions=>actions)
+        :project => @project,:commands=>{},:brickargs=>brickargs)
 
       extra_summary_html = extra_summary.map { |string, extra_binding| erb.render_string string, extra_binding }.join
       extra_details_html = extra_details.map { |string, extra_binding| erb.render_string string, extra_binding }.join
@@ -81,22 +81,28 @@ class HtmlView < View
 
   end
 
-  def generate_release_html_str links, r, actions={}
+  def generate_release_html_str links, r, brickargs={}
 	ErbHtml.new(@template_dir, links, :release => r,
-          :issues => @project.issues_for_release(r), :project => @project, :actions=>actions).
+          :issues => @project.issues_for_release(r), :project => @project, :brickargs=>brickargs).
           render_template("release")
   end
 
-  def generate_index_html_str links, actions={}
+  def generate_index_html_str links, brickargs={}
     	past_rels, upcoming_rels = @project.releases.partition { |r| r.released? }
 	ErbHtml.new(@template_dir, links, :project => @project,
           :past_releases => past_rels, :upcoming_releases => upcoming_rels,
-          :components => @project.components, :actions=>actions).
+          :components => @project.components, :brickargs=>brickargs).
           render_template("index")
   end
 
-  def generate_component_html_str links, c, actions={}
-	ErbHtml.new(@template_dir, links, :component => c, :actions=>actions,
+  def generate_unassigned_html_str links, brickargs={}
+	ErbHtml.new(@template_dir, links, :brickargs=>brickargs,
+       		 :issues => @project.unassigned_issues, :project => @project).
+       		 render_template("unassigned")
+  end
+
+  def generate_component_html_str links, c, brickargs={}
+	ErbHtml.new(@template_dir, links, :component => c, :brickargs=>brickargs,
           :issues => @project.issues_for_component(c), :project => @project).
           render_template("component")
   end
@@ -137,9 +143,7 @@ class HtmlView < View
 
     fn = File.join @dir, links["unassigned"]
     File.open(fn, "w") do |f|
-      f.puts ErbHtml.new(@template_dir, links,
-        :issues => @project.unassigned_issues, :project => @project).
-        render_template("unassigned")
+      f.puts generate_unassigned_html_str links
     end
 
     fn = File.join @dir, links["index"]

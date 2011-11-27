@@ -51,7 +51,9 @@ class BrickView < HtmlView
 
 	def generate_index 
 		links = generate_links
-		generate_index_html_str links, {'New Issue'=>'/new_issue.html', 'New Component'=>'/new_component.html', 'New Release'=>'/new_release.html'}
+		generate_index_html_str links, {:actions=>[['New Issue','/new_issue.html'],
+							   ['New Component','/new_component.html'],
+							   ['New Release','/new_release.html']]}
 	end
 
 	def generate_release relname
@@ -61,7 +63,7 @@ class BrickView < HtmlView
 
 		links = generate_links
 		r = @project.release_for relname
-		generate_release_html_str links, r, {'New Issue'=>issue_link}
+		generate_release_html_str links, r, {:actions=>[['New Issue',issue_link]]}
 	end
 
 	def generate_component comp_name
@@ -71,7 +73,7 @@ class BrickView < HtmlView
 
 		links = generate_links
 		c = @project.component_for comp_name
-		generate_component_html_str links, c, {'New Issue'=>issue_link}
+		generate_component_html_str links, c, {:actions=>[['New Issue',issue_link]]}
 	end
 
 	def generate_issue issuename

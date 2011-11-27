@@ -101,13 +101,13 @@
   </table>
 <% end %>
 
-<% if not actions.empty? %><h2>Actions</h2><% firstitem = true %>
-	<% actions.each_pair do |action,link| %>
+<% if (not brickargs.empty?) && (not brickargs[:actions].empty?) %><h2>Actions</h2><% firstitem = true %>
+	<% brickargs[:actions].each do |actionlink| %>
 		<% if firstitem %>
-			<%= "<a href=\"#{link}\">#{action}</a>" %>
+			<%= "<a href=\"#{actionlink[1]}\">#{actionlink[0]}</a>" %>
 			<% firstitem = false %>
 		<% else %>
-			<%= " | <a href=\"#{link}\">#{action}</a>" %>
+			<%= " | <a href=\"#{actionlink[1]}\">#{actionlink[0]}</a>" %>
 		<% end %>
 	<% end %>
 <% end %>
