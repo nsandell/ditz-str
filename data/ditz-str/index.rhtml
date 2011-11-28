@@ -7,11 +7,29 @@
 <title><%= project.name %> Issue Tracker</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="dropdown.css" type="text/css"/>
+<script type="text/javascript" src="dropdown.js">
+</script>
 </head>
 <body>
 
 <div class="main">
 <h1><%= project.name %> Issue Tracker</h1>
+
+<% if not brickargs.empty? %>
+<div class="menu">
+        <dl class="dropdown">
+		<dt id="newissue-ddheader" onmouseover="ddMenu('newissue',1)" onmouseout="ddMenu('newissue',-1)" onclick="location.href='/new_issue.html'" >New Issue</dt>
+	</dl>
+        <dl class="dropdown">
+		<dt id="newrelease-ddheader" onmouseover="ddMenu('newrelease',1)" onmouseout="ddMenu('newrelease',-1)" onclick="location.href='/new_release.html'">New Release</dt>
+	</dl>
+        <dl class="dropdown">
+		<dt id="newcomponent-ddheader" onmouseover="ddMenu('newcomponent',1)" onmouseout="ddMenu('newcomponent',-1)" onclick="location.href='/new_component.html'">New Component</dt>
+        </dl>
+</div>
+<br/><br/><br/>
+<% end %>
 
 <h2>Upcoming Releases</h2>
 <% if upcoming_releases.empty? %>
@@ -99,17 +117,6 @@
     <% end %>
     </tbody>
   </table>
-<% end %>
-
-<% if (not brickargs.empty?) && (not brickargs[:actions].empty?) %><h2>Actions</h2><% firstitem = true %>
-	<% brickargs[:actions].each do |actionlink| %>
-		<% if firstitem %>
-			<%= "<a href=\"#{actionlink[1]}\">#{actionlink[0]}</a>" %>
-			<% firstitem = false %>
-		<% else %>
-			<%= " | <a href=\"#{actionlink[1]}\">#{actionlink[0]}</a>" %>
-		<% end %>
-	<% end %>
 <% end %>
 
 <h2>Recent activity</h2>

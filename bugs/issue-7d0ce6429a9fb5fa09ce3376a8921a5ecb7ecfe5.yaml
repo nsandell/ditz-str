@@ -5,8 +5,8 @@ type: :feature
 component: WEBrick interface
 release: Version 0.1
 reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2011-11-10 04:44:00.002322 Z
 references: []
 
@@ -20,3 +20,15 @@ log_events:
   - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
   - assigned to release Version 0.1 from unassigned
   - ""
+- - 2011-11-28 03:55:28.097516 Z
+  - !str:WEBrick::HTTPUtils::FormData 
+    str: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+    "@filename": 
+    "@header": {}
+
+    "@name": closer
+    "@next_data": 
+    "@raw_header": []
+
+  - closed with disposition fixed
+  - !str:WEBrick::HTTPUtils::FormData Can now close issues, also menus look great now!

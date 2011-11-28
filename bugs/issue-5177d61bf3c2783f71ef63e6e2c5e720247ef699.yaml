@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: New issue creator field doesn't work.
+desc: When creating a new issue the creator field is ignored and the default user is used.
+type: :bugfix
+component: WEBrick interface
+release: Version 0.1
+reporter: Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+status: :unstarted
+disposition: 
+creation_time: 2011-11-27 20:39:40.831393 Z
+references: []
+
+id: 5177d61bf3c2783f71ef63e6e2c5e720247ef699
+log_events: 
+- - 2011-11-27 20:39:41.839042 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - ""

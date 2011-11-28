@@ -182,6 +182,16 @@ div.footer {
   background-color: #f2f2f2;
 }
 
+.menu {
+	padding: 0.5em;
+  	margin-left: -20px;
+  	margin-right: -20px;
+  	background-color: #305275;
+  	margin-top: 0;
+  	margin-bottom: 0;
+  	color: #fff;
+}
+
 .backptr {
   font-size: smaller;
   width: 100%;

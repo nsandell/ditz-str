@@ -18,12 +18,18 @@
 
 <form name="close_form" method="post">
 	Disposition<br/><select name="disposition">
-		<option value="fixed">Fixed</option>
-		<option value="wontfix">Won't Fix</option>
-		<option value="reorg">Reorganized</option>
-	</select>
-	<input type="submit" value="Add Release"/>
-	<input type="hidden" name="action" value="startclose">
+		<% [['fixed','Fixed'],['wontfix','Won\'t Fix'],['reorg','Reorganized']].each do |dispos| %>
+			<% if disposition!=nil && disposition==dispos[0] %>
+				<%= "<option value=\"#{dispos[0]}\" selected=\"yes\">#{dispos[1]}</option>" %>
+			<% else %>
+				<%= "<option value=\"#{dispos[0]}\">#{dispos[1]}</option>" %>
+			<% end %>
+		<% end %>
+	</select><br/>
+	Comments<br/><textarea rows=5 cols=40 name="comment"></textarea><br>
+	Closer<br/><%= "<input type=\"text\" size=\"80\" name=\"closer\" value=\"#{@config.user}\"/><br/>" %>
+	<input type="submit" value="Close"/>
+	<%= "<input type=\"hidden\" name=\"issue\" value=\"#{issue.id}\">" %>
 </form>
 
 </div>
