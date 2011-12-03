@@ -67,6 +67,7 @@ Gem::Specification.new do |s|
     "data/ditz-str/style.css",
     "data/ditz-str/unassigned.rhtml",
     "data/ditz-str/yellow-bar.png",
+    "ditz-str.gemspec",
     "lib/ditzstr.rb",
     "lib/ditzstr/brick.rb",
     "lib/ditzstr/file-storage.rb",
