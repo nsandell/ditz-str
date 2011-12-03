@@ -22,6 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "nils.sandell@systemstechnologyresearch.com"
   gem.authors = ["Nils F. Sandell"]
   gem.exclude = ['bugs']
+  gem.add_dependency 'trollop', '>= 1.9'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
