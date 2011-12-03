@@ -1,0 +1,38 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: !str:WEBrick::HTTPUtils::FormData Create unassigned issue page
+desc: !str:WEBrick::HTTPUtils::FormData Needs to be an unassigned issue page to list them.
+type: !str:WEBrick::HTTPUtils::FormData 
+  str: feature
+  "@filename": 
+  "@header": &id001 {}
+
+  "@name": type
+  "@next_data": 
+  "@raw_header": &id002 []
+
+component: !str:WEBrick::HTTPUtils::FormData 
+  str: WEBrick interface
+  "@filename": 
+  "@header": *id001
+  "@name": component
+  "@next_data": 
+  "@raw_header": *id002
+release: !str:WEBrick::HTTPUtils::FormData 
+  str: Version 0.1
+  "@filename": 
+  "@header": *id001
+  "@name": release
+  "@next_data": 
+  "@raw_header": *id002
+reporter: poop
+status: :unstarted
+disposition: 
+creation_time: 2011-12-02 04:59:45.828646 Z
+references: []
+
+id: 0c00c1d7fdffaad304e62d79d9b3d5e92547055b
+log_events: 
+- - 2011-12-02 04:59:45.828744 Z
+  - Nils Sandell <nils.sandell@systemstechnologyresearch.com>
+  - created
+  - !str:WEBrick::HTTPUtils::FormData 

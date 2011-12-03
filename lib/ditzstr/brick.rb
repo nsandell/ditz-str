@@ -15,34 +15,41 @@ class BrickView < HtmlView
 		return "<a href=\"#{links[name]}\">#{text}</a>"
 	end
 
+	def edit_issue issuename, changes
+		if changes[:description] != nil
+		end
+		if changes[:reporter] != nil
+		end
+		if changes[:title] != nil
+		end
+	end
+
 	def comment_on_issue issuename, comment
-		issues_vec = @project.issues_for issuename
-	
-		case issues_vec.size
-               	when 0; return "<html><body>Error - attempted to comment on non-existant issue.</body></html>"
-               	when 1;
-                 	iss = issues_vec.first
+
+		issue_res = get_issue_by_name issuename
+
+		if issue_res[0]
+			iss = issue_res[1]
 			iss.log "commented", @config.user, comment
 			return "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/issue-#{issuename}.html\"></head><body>Redirecting...</body></html>"
-                else
-                	return "<html><body>Error - attempted to comment on multiple issues.</body></html>"
-               	end
+		else
+			return issue_res[1]
+		end
 	end
 
 	def generate_edit_issue issue_id
 	end
 
 	def generate_close_issue issue_id, disposition
-		issues_vec = @project.issues_for issue_id 
 
-		case issues_vec.size
-		when 0; return "<html><body>No such issue found...</body></html>"
-		when 1; 
-			issue = issues_vec.first
+		issue_res = get_issue_by_name issue_id
+
+		if issue_res[0]
+			issue = issue_res[1]
 			erb = ERB.new IO.read(File.join(@template_dir, "close.rhtml"))
 			return erb.result binding()
 		else
-			return "<html><body>Multiple issues found...</body></html>"
+			return issue_res[1]
 		end
 	end
 
@@ -90,15 +97,26 @@ class BrickView < HtmlView
 	def generate_issue issuename
 
 		links = generate_links
+
+		issue_res = get_issue_by_name issuename
+
+		if issue_res[0]
+			return generate_issue_html_str links, issue_res[1], {:brick=>true}
+		else
+			return issue_res[1]
+		end
+	end
+
+	def get_issue_by_name issuename
 		issues_vec = @project.issues_for issuename
 
 		case issues_vec.size
-		when 0; return "<html><body>No such issue found...</body></html>"
-		when 1; 
-			iss = issues_vec.first
-			return generate_issue_html_str links, iss, {:brick=>true}
+		when 0;
+			return [false,"<html><body>No such issue found...</body></html>"];
+		when 1;
+			return [true,issues_vec.first]
 		else
-			return "<html><body>Multiple issues found...</body></html>"
+			return [false,"<html><body>Multiple issues found...</body></html>"];
 		end
 	end
 end
@@ -170,6 +188,8 @@ class DitzStrServlet < HTTPServlet::AbstractServlet
 			resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/component-#{req.query['component']}.html\"></head><body>Redirecting...</body></html>"
 			@project.add_issue issue
 			@project.assign_issue_names!
+		elsif req.path.start_with? '/edit_issue.html'
+
 		elsif req.path.start_with? '/new_component.html'
 			component = Component.create({:project => @project, :config=>@config},{:name => req.query['name']});
 			@project.add_component component
@@ -190,17 +210,16 @@ class DitzStrServlet < HTTPServlet::AbstractServlet
 			comment = req.query['comment']
 			closer = req.query['closer']
 			disp = req.query['disposition']
-	
-			issues_vec = @project.issues_for issue_id
-			case issues_vec.size
-       	        	when 0; resp.body = "<html><body>Error - attempted to close non-existant issue.</body></html>"
-       	        	when 1;
-       		          	iss = issues_vec.first
+
+			issue_res = @brickview.get_issue_by_name issue_id
+			
+			if issue_res[0]
+				iss = issue_res[1]
 				iss.close disp.to_sym, closer, comment
 				resp.body = "<html><head><meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=/issue-#{issue_id}.html\"></head><body>Redirecting...</body></html>"
-       		        else
-               	 		resp.body = "<html><body>Error - attempted to close multiple issues.</body></html>"
-               		end
+			else
+				return issue_res[1]
+			end
 		end
 	end
 end
