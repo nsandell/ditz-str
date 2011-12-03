@@ -21,6 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = "Modification of the ditz issue tracking originally created by William Morgan.  First new feature is a portable web server for interacting with the issue system."
   gem.email = "nils.sandell@systemstechnologyresearch.com"
   gem.authors = ["Nils F. Sandell"]
+  gem.exclude = ['bugs']
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
